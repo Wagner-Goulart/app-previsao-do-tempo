@@ -6,7 +6,6 @@ cityBtn.addEventListener('click', async ()=> {
     const weatherResults = document.querySelector('.weather-results')
 
     const city = await getWeather(inputCity)
-    console.log(city)
     const cityName = (city.name)
     const cityCountry = (city.sys.country)
     const cityLat = (city.coord.lat)
