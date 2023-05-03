@@ -14,7 +14,7 @@ main {
     min-width: 60%;
     border-radius: 5px;
     box-shadow: 4px 3px 10px #000000 ;
-    background-color: #e5e5e5;
+    background-color: #cfcfcf;
 }
 
 .header {
@@ -97,4 +97,8 @@ main {
 .weather-results .feels-like {
     font-size: 20px;
     text-transform: capitalize;
+}
+
+#map { 
+    height: 250px;
 }
