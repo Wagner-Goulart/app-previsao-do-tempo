@@ -1,4 +1,3 @@
-const key = '4cb5a31adc4fff6205dbb26aa82448a3';
 const cityBtn = document.querySelector('.city-btn')
 var map
 
