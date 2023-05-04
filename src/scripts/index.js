@@ -1,38 +1,37 @@
+import { city } from './objects/city.js'
+import { screen } from './objects/screen.js'
+
 const cityBtn = document.querySelector('.city-btn')
+const inputCity = document.querySelector('.input-city')
 var map
 
 cityBtn.addEventListener('click', async () => {
-    const inputCity = document.querySelector('.input-city').value
-    const weatherResults = document.querySelector('.weather-results')
+    const inputCityName = inputCity.value
 
-    if(!inputCity) {
+    if (!inputCityName) {
         alert('Informe uma cidade')
+        return
     }
+    const cityReponse = await getWeather(inputCityName)
+    city.setWeatherInfo(cityReponse)
+    screen.renderWeatherInfos(city)
+})
 
-    const city = await getWeather(inputCity)
-    const cityName = (city.name)
-    const cityCountry = (city.sys.country)
-    const cityLat = (city.coord.lat)
-    const cityLon = (city.coord.lon)
-    const Temperature = Math.floor((city.main.temp))
-    const minTemp = Math.floor((city.main.temp_min))
-    const FeelsLike = Math.floor((city.main.feels_like))
-    const icon = (city.weather[0].icon)
-   
+inputCity.addEventListener('keyup', async (e) => {
+    const key = e.keycode || e.which
+    if (key === 13) {
+        const inputCityName = inputCity.value
 
-    weatherResults.innerHTML = `<div class = 'weather-info'>
-                                    <h2 class = "city-tittle">${cityName}, 
-                                        <span class = "city-country">${cityCountry}
-                                        </span>
-                                    </h2>
-                                    <small class = "lat-long">${cityLat} ${cityLon}</small>
-                                    <p class = "temperature">
-                                        <img src = "https://openweathermap.org/img/wn/${icon}@2x.png">${Temperature} ºC 
-                                        <small class = "min-temp">Min:${minTemp} ºC</small>
-                                    </p>
-                                    <p class = "feels-like">Sensação térmica: ${FeelsLike} ºC</p>
-                                </div>
-                                `
+        if (!inputCityName) {
+            alert('Informe uma cidade')
+            return
+        }
+
+        const cityReponse = await getWeather(inputCityName)
+        city.setWeatherInfo(cityReponse)
+        screen.renderWeatherInfos(city)
+
+    }
 })
 
 async function getCity(cityName) {
@@ -49,23 +48,24 @@ async function getWeather(cityName) {
     renderMap(cityName)
 
     return await response.json()
+
 }
 
 async function renderMap(cityName) {
     const latLong = await getCity(cityName)
 
     if (map === undefined) {
-        map = L.map('map').setView([latLong[0].lat,latLong[0].lon], 13);
+        map = L.map('map').setView([latLong[0].lat, latLong[0].lon], 13);
     } else {
         map.remove()
-        map = L.map('map').setView([latLong[0].lat,latLong[0].lon], 13);
+        map = L.map('map').setView([latLong[0].lat, latLong[0].lon], 13);
     }
-   
+
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    L.marker([latLong[0].lat,latLong[0].lon]).addTo(map)
+    L.marker([latLong[0].lat, latLong[0].lon]).addTo(map)
         .openPopup();
 
 }
