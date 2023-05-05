@@ -15,7 +15,8 @@ const screen = {
                     <p class = "feels-like">Sensação térmica: ${city.feelsLike} ºC</p>
                 </div>
                 `
-    }
+    },
+
 }
 
 export {screen}

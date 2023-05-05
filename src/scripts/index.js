@@ -3,7 +3,7 @@ import { screen } from './objects/screen.js'
 
 const cityBtn = document.querySelector('.city-btn')
 const inputCity = document.querySelector('.input-city')
-var map
+ var map
 
 cityBtn.addEventListener('click', async () => {
     const inputCityName = inputCity.value
@@ -15,6 +15,8 @@ cityBtn.addEventListener('click', async () => {
     const cityReponse = await getWeather(inputCityName)
     city.setWeatherInfo(cityReponse)
     screen.renderWeatherInfos(city)
+    inputCity.value = ''
+    inputCity.focus()
 })
 
 inputCity.addEventListener('keyup', async (e) => {
@@ -30,6 +32,8 @@ inputCity.addEventListener('keyup', async (e) => {
         const cityReponse = await getWeather(inputCityName)
         city.setWeatherInfo(cityReponse)
         screen.renderWeatherInfos(city)
+        inputCity.value = ''
+        inputCity.focus()
 
     }
 })
@@ -42,16 +46,22 @@ async function getCity(cityName) {
 }
 
 async function getWeather(cityName) {
-    const latLong = await getCity(cityName)
-    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latLong[0].lat}&lon=${latLong[0].lon}&units=metric&appid=4cb5a31adc4fff6205dbb26aa82448a3`)
+    try {
+        const latLong = await getCity(cityName)
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latLong[0].lat}&lon=${latLong[0].lon}&units=metric&appid=4cb5a31adc4fff6205dbb26aa82448a3`)
+        
+    
+        renderMap(cityName)
+    
+        return await response.json()
 
-    renderMap(cityName)
-
-    return await response.json()
-
+    } catch (err) {
+        alert('Cidade não existe')
+    }
 }
 
 async function renderMap(cityName) {
+   
     const latLong = await getCity(cityName)
 
     if (map === undefined) {

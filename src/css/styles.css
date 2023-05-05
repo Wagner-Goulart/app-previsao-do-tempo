@@ -54,13 +54,16 @@ main {
 }
 
 .weather-results {
-    /* background-color: #fcb33e; */
     display: flex;
     align-items: center;
     margin-top: 20px;
     padding: 20px;
-    
 }
+
+.weather-results img {
+    width:100%
+}
+
 
 .weather-results .city-tittle {
     margin-bottom: 10px;
